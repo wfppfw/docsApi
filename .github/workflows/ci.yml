@@ -20,7 +20,7 @@ jobs:
       - name: Install and Dev
         run: |
           npm install
-          npm run dev
+          npm run prd
 
       - name: Deploy # 将打包内容发布到 github page
         uses: JamesIves/github-pages-deploy-action@3.5.9 # 使用别人写好的 actions
