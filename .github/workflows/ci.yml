@@ -26,7 +26,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ./ # The folder the action should deploy.
-          BRANCH: gh-pages
+          BRANCH: main
           ACCESS_TOKEN: ${{ secrets.DOCSAPI }} # VUE_ADMIN_TEMPLATE 是我的 secret 名称，需要替换成你的
 
 
