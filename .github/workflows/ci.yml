@@ -26,7 +26,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ./ # The folder the action should deploy.
-
+          BRANCH: gh-pages
 
       # - name: Deploy # 将打包内容发布到 github page
       #   uses: JamesIves/github-pages-deploy-action@3.5.9 # 使用别人写好的 actions
