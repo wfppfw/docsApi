@@ -22,7 +22,7 @@ jobs:
           npm install
           npm run prd
 
-      - name: Deploy 🚀
+      - name: Deploy 🚀 #
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: ./ # The folder the action should deploy.
