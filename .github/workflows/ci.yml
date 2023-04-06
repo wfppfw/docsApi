@@ -12,6 +12,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: add node env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: Install and Dev
         run: |
           npm install
