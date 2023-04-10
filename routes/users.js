@@ -1,13 +1,21 @@
-const router = require('koa-router')()
+const {} = require('../utils/AES')
 
-router.prefix('/users')
+const router = require('koa-router')();
+
+router.prefix('/users');
 
 router.get('/', function (ctx, next) {
-  ctx.body = 'this is a users response!'
-})
+  ctx.body = 'this is a users response!';
+});
 
 router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
-})
+  ctx.body = 'this is a users/bar response';
+});
 
-module.exports = router
+router.get('/ip', function (ctx, next) {
+  // ctx.body = 'this is a users/bar response';
+  console.log(ctx, next);
+  router.redirect('www.baidu.com');
+});
+
+module.exports = router;
