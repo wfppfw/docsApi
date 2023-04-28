@@ -11,7 +11,6 @@ const registerRouter = () => {
     .filter((value) => value.indexOf('index.js') === -1) //过滤掉首页；
     .map((router) => {
       //将所有的元素添加到路由
-      console.log(router, '=======registerRouter'); //   E:/myKun/testKoa2/myrouter/login.js ========registerRouter
       routers.push(require(router).routes());
       routers.push(require(router).allowedMethods());
     });

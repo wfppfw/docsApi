@@ -1,5 +1,12 @@
 const { encrypt, decrypt } = require('../utils/AES');
 const axios = require('../utils/axios');
+const {
+  getUrlbody,
+  selectResult,
+  getListResult,
+} = require('../utils/wallpaper/index');
+const { downloadImg } = require('../utils/file/index');
+const { Fnc } = require('../utils/sql/index');
 const router = require('koa-router')();
 
 router.get('/', async (ctx, next) => {
@@ -7,8 +14,38 @@ router.get('/', async (ctx, next) => {
     title: 'Hello Koa 2!',
   });
 });
+router.get('/sql', async (ctx, next) => {
+  Fnc();
+  await ctx.render('index', {
+    title: 'Hello Koa 2!',
+  });
+});
+router.get('/img', async (ctx, next) => {
+  downloadImg(
+    'https://w.wallhaven.cc/full/01/wallhaven-01p8g0.jpg',
+    'wallpaperRandom.jpg'
+  );
+  ctx.body = 'img';
+});
 
 router.get('/string', async (ctx, next) => {
+  const str = await getUrlbody();
+  console.log(str);
+  const list = selectResult(str);
+  console.log(list);
+  // const s1 = await getUrlbody(list[0]);
+  // const l1 = selectResult(
+  //   s1,
+  //   /<img\s+[^>]*id\s*=\s*["']wallpaper["'][^>]*src\s*=\s*["']([^"']*)["']/gi
+  // );
+  // const list = selectResult(str);
+  const res = await getListResult(list);
+  console.log(res);
+  // console.log(res, 'ssss');
+  ctx.body = str;
+});
+
+router.get('/test', async (ctx, next) => {
   ctx.body = 'koa2 string';
 });
 
