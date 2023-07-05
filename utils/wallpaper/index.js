@@ -44,9 +44,20 @@ const getUrlbody = (URL = 'https://wallhaven.cc/random') => {
   });
 };
 
+const getListResultOne = async (list) => {
+  let length = list?.length;
+  let oneIndex = Math.random() * length;
+  let res = await getUrlbody(list[oneIndex]);
+  let url = await selectResult(
+    res,
+    /<img\s+[^>]*id\s*=\s*["']wallpaper["'][^>]*src\s*=\s*["']([^"']*)["']/gi
+  );
+  return url;
+};
+
 const getListResult = (list) => {
   // Promise.all(list.map((i) => getUrlbody(i)[0]))
-  console.log(list, '---');
+  // console.log(list, '---');
   // Promise.all(
   //   list.map((i) => {
   //     console.log(getUrlbody(i));
@@ -78,7 +89,6 @@ const getListResult = (list) => {
   //     });
   // resolve(Promise.all(...list.map(i=>getUrlbody(i))).map(j=>selectResult(j,/<img\s+[^>]*id\s*=\s*["']wallpaper["'][^>]*src\s*=\s*["']([^"']*)["']/gi)));
   // });
-
   //   return list.map(async (i) => {
   //     let htmlStr = await getUrlbody(i);
   //     return await selectResult(
@@ -92,4 +102,5 @@ module.exports = {
   getUrlbody,
   selectResult,
   getListResult,
+  getListResultOne,
 };

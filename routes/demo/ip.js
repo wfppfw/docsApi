@@ -2,6 +2,7 @@ const router = require('koa-router')();
 const bodyParser = require('koa-bodyparser');
 const { encrypt, decrypt } = require('../../utils/AES');
 const keys = require('../../utils/key');
+const { Fnc, db } = require('../../utils/sql/index');
 router.prefix('/demo');
 
 function getClientIP(req) {
@@ -22,6 +23,12 @@ router.get('/ip', function (ctx, next) {
   try {
     if (url) {
       console.log(getClientIP(ctx.req));
+      let addSql = db.prepare(
+        'INSERT OR REPLACE INTO ipSearch (ip,time) VALUES (?,?)'
+      );
+      addSql.run(String(getClientIP(ctx.req)), String(new Date()));
+      addSql.finalize();
+      // 存入时间，ip，url,唯一id
       // axios
       //   .get(keys.qqMapUrl + 'key=' + keys.qqMapKey)
       //   .then((res) => {
@@ -46,7 +53,7 @@ router.post('/ip', async (ctx, next) => {
     prefixUrl = 'http://localhost/demo/ip';
   }
   if (process.env.NODE_ENV === 'prd') {
-    prefixUrl = 'http://localhost/demo/ip';
+    prefixUrl = 'https://docsapi.onrender.com/demo/ip';
   }
   //短链接处理
 

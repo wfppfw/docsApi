@@ -4,9 +4,10 @@ const {
   getUrlbody,
   selectResult,
   getListResult,
+  getListResultOne,
 } = require('../utils/wallpaper/index');
 const { downloadImg } = require('../utils/file/index');
-const { Fnc } = require('../utils/sql/index');
+const { Fnc, db } = require('../utils/sql/index');
 const router = require('koa-router')();
 
 router.get('/', async (ctx, next) => {
@@ -15,7 +16,22 @@ router.get('/', async (ctx, next) => {
   });
 });
 router.get('/sql', async (ctx, next) => {
-  Fnc();
+  const createTableSql = `
+  CREATE TABLE ipSearch (
+    id INTEGER PRIMARY KEY,
+    ip VARCHAR (50) NOT NULL,
+    time VARCHAR (50) NOT NULL
+  ) 
+  `;
+  const sql1add = db.prepare(
+    'INSERT OR REPLACE INTO ipSearch (ip,time) VALUES (?,?)'
+  );
+  // sql1add.run('1', '2023');
+  db.each('SELECT id, ip,time FROM ipSearch', function (err, row) {
+    console.log(`${row.id} ip:${row.ip} time:${row.time}`);
+  });
+
+  // Fnc();
   await ctx.render('index', {
     title: 'Hello Koa 2!',
   });
@@ -28,21 +44,22 @@ router.get('/img', async (ctx, next) => {
   ctx.body = 'img';
 });
 
-router.get('/string', async (ctx, next) => {
+router.get('/random', async (ctx, next) => {
   const str = await getUrlbody();
-  console.log(str);
+  console.log(str, 'str');
   const list = selectResult(str);
-  console.log(list);
+  console.log(list, 'list');
+  // console.log(await getListResultOne(list));
   // const s1 = await getUrlbody(list[0]);
   // const l1 = selectResult(
   //   s1,
   //   /<img\s+[^>]*id\s*=\s*["']wallpaper["'][^>]*src\s*=\s*["']([^"']*)["']/gi
   // );
   // const list = selectResult(str);
-  const res = await getListResult(list);
-  console.log(res);
+  // const res = await getListResult(list);
+  // console.log(res);
   // console.log(res, 'ssss');
-  ctx.body = str;
+  ctx.body = '';
 });
 
 router.get('/test', async (ctx, next) => {
@@ -67,13 +84,15 @@ router.get('/ip', async (ctx, next) => {
       'https://apis.map.qq.com/ws/location/v1/ip?key=6CJBZ-EBHRH-I5BDY-WGC66-KN6OF-Y4FD5'
     )
     .then((res) => {
-      console.log(res.result.ip);
+      console.log(Object.keys(res), res.data.result, 222, 111);
+      ctx.body = res.data.state;
     })
     .catch((err) => {
       console.log(err);
     });
   // 跳转目标地址
-  ctx.response.redirect(decrypt(ctx.request.query.url));
+  // ctx.body = 'success';
+  // ctx.response.redirect(decrypt(ctx.request.query.url));
 });
 
 module.exports = router;
