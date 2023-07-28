@@ -1,6 +1,7 @@
 // 通用翻译API HTTPS 地址：
 // https://fanyi-api.baidu.com/api/trans/vip/translate
 
+// 通用翻译平台：https://fanyi-api.baidu.com/
 /**
  * 签名生成方法
 签名是为了保证调用安全，使用 MD5 算法生成的一段字符串，生成的签名长度为 32 位，签名中的英文字符均为小写格式。
@@ -26,16 +27,14 @@ const { salt } = require('../../utils/random.js');
 const { MD5 } = require('../../utils/md5');
 
 const commonUrl = 'https://fanyi-api.baidu.com/api/trans/vip/translate';
-const transApi = (query, form = 'en', to = 'zh') => {
-  console.log(salt());
+const transApi = async (query, form = 'en', to = 'zh') => {
+  console.log(query, form, to);
+  let result = {};
   let randomString = new Date().getTime();
   const Step1 =
     keys.BaiDu_fanyi_APPID + query + randomString + keys.BaiDu_fanyi_SECRET;
-  console.log('setp1', Step1);
   const Step2 = MD5(Step1);
-  console.log(Step2);
-  console.log(query, form, to);
-  axios
+  await axios
     .get(commonUrl, {
       params: {
         q: query,
@@ -47,11 +46,14 @@ const transApi = (query, form = 'en', to = 'zh') => {
       },
     })
     .then((res) => {
-      console.log(res.data);
+      console.log(res)
+      result = res.data;
     })
     .catch((error) => {
-      console.log(error);
+      result = { msg: error };
     });
+
+  return result;
 };
 
 module.exports = {

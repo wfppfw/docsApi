@@ -39,7 +39,7 @@ router.get('/ip', function (ctx, next) {
       //   });
       ctx.response.redirect(decrypt(url));
     } else {
-      ctx.body = 'error param';
+      ctx.body = getClientIP(ctx.req);
     }
   } catch (error) {
     ctx.body = '';
