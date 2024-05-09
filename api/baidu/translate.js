@@ -27,8 +27,8 @@ const { salt } = require('../../utils/random.js');
 const { MD5 } = require('../../utils/md5');
 
 const commonUrl = 'https://fanyi-api.baidu.com/api/trans/vip/translate';
-const transApi = async (query, form = 'en', to = 'zh') => {
-  console.log(query, form, to);
+const transApi = async (query, from = 'en', to = 'zh') => {
+  console.log(query, from, to);
   let result = {};
   let randomString = new Date().getTime();
   const Step1 =
@@ -38,7 +38,7 @@ const transApi = async (query, form = 'en', to = 'zh') => {
     .get(commonUrl, {
       params: {
         q: query,
-        from: form,
+        from: from,
         to: to,
         appid: keys.BaiDu_fanyi_APPID,
         salt: randomString,
@@ -46,7 +46,7 @@ const transApi = async (query, form = 'en', to = 'zh') => {
       },
     })
     .then((res) => {
-      console.log(res)
+      console.log(res);
       result = res.data;
     })
     .catch((error) => {
